@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.uproject\shell\UE5ClearCache]
+@="Clear Cache and Rebuild"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.uproject\shell\UE5ClearCache\command]
+@="powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"H:\\Games\\Unreal\\Aaron\\UE5ShellExtension\\ClearCacheAndRebuild\\UE5ClearCache.ps1\" \"%1\""
