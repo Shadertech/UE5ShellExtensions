@@ -32,8 +32,8 @@ To remove this extension:
 
 To update this extension:
 1. Run ClearCacheAndRebuild/UE5ClearCacheContextMenuDel.reg
-2. Pull the latest changes from github
-3. Run ClearCacheAndRebuild/UE5ClearCacheContextMenuAdd.reg
+2. Pull the latest changes from github (remember to use your path for UE5ClearCache.ps1)
+4. Run ClearCacheAndRebuild/UE5ClearCacheContextMenuAdd.reg
 
 ## Contributing
 
