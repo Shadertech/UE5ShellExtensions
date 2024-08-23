@@ -6,6 +6,8 @@ This project is a place where I put useful shell extensions for UE5 projects.
 
 ### 1. ClearCacheAndRebuild
 
+![clearCacheAndRebuild](https://github.com/user-attachments/assets/70b3ccd1-0507-48fa-a8ef-0b83a87ecd9b)
+
 **Overview**:
 Adds a context menu option to the right click on all UProject files.
 It will clear out binaries and intermediates folders of both the project and it's plugins. It then will regenerate project files. It automatically selects the version of the UProject; working with both binary releases and custom engines.
