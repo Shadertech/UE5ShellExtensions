@@ -17,7 +17,7 @@ Remove-Item -Path "HKLM:\SOFTWARE\Classes\SystemFileAssociations\.uproject\shell
 ```
 
 ## Features
-<img width="290" height="128" alt="clearCacheAndRebuild (2)" src="https://github.com/user-attachments/assets/dc6d08df-ac04-4a3e-b89f-69d3c7ad3738" />
+<img width="289" height="319" alt="UE5ShellExtensions" src="https://github.com/user-attachments/assets/083089ab-d4b3-4898-aa67-4db119001400" />
 
 All features resolve the project's engine version automatically from its `.uproject` file - no hardcoded engine path.
 
