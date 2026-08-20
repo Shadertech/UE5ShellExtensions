@@ -23,7 +23,7 @@ Remove-Item -Path "HKLM:\SOFTWARE\Classes\SystemFileAssociations\.uproject\shell
 
 ### ClearCacheAndRebuild
 
-![clearCacheAndRebuild](https://github.com/user-attachments/assets/70b3ccd1-0507-48fa-a8ef-0b83a87ecd9b)
+<img width="290" height="128" alt="clearCacheAndRebuild (2)" src="https://github.com/user-attachments/assets/dc6d08df-ac04-4a3e-b89f-69d3c7ad3738" />
 
 Clears `Binaries`/`Intermediate` (project and plugins) and regenerates project files, auto-detecting the project's engine version.
 
