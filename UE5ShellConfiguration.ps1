@@ -14,11 +14,53 @@ param(
     [string]$ScriptPath
 )
 
+$MenuLabelSuffix = ' (SE)'
+
 $Features = @(
     [PSCustomObject]@{
         Id           = 'ClearCacheAndRebuild'
         MenuLabel    = 'Clear Cache and Rebuild'
         RelativePath = 'ClearCacheAndRebuild\UE5ClearCache.ps1'
+    },
+    [PSCustomObject]@{
+        Id           = 'Build'
+        MenuLabel    = 'Build'
+        RelativePath = 'Build\UE5Build.ps1'
+    },
+    [PSCustomObject]@{
+        Id           = 'RunHeadlessServer'
+        MenuLabel    = 'Run Headless Server'
+        RelativePath = 'RunHeadlessServer\UE5RunHeadlessServer.ps1'
+    },
+    [PSCustomObject]@{
+        Id           = 'CookContent'
+        MenuLabel    = 'Cook Content'
+        RelativePath = 'CookContent\UE5CookContent.ps1'
+    },
+    [PSCustomObject]@{
+        Id           = 'PackageProject'
+        MenuLabel    = 'Package Project'
+        RelativePath = 'PackageProject\UE5PackageProject.ps1'
+    },
+    [PSCustomObject]@{
+        Id           = 'RunAutomationTests'
+        MenuLabel    = 'Run Automation Tests'
+        RelativePath = 'RunAutomationTests\UE5RunAutomationTests.ps1'
+    },
+    [PSCustomObject]@{
+        Id           = 'ClearDDC'
+        MenuLabel    = 'Clear Derived Data Cache'
+        RelativePath = 'ClearDDC\UE5ClearDDC.ps1'
+    },
+    [PSCustomObject]@{
+        Id           = 'OpenSavedLogs'
+        MenuLabel    = 'Open Saved Logs'
+        RelativePath = 'OpenSavedLogs\UE5OpenSavedLogs.ps1'
+    },
+    [PSCustomObject]@{
+        Id           = 'OpenProjectTerminal'
+        MenuLabel    = 'Open Terminal Here'
+        RelativePath = 'OpenProjectTerminal\UE5OpenProjectTerminal.ps1'
     }
 )
 
@@ -166,7 +208,7 @@ function Install-Feature {
     $keyPath = Get-FeatureRegKeyPath $FeatureItem
     $cmdPath = Get-FeatureRegCommandPath $FeatureItem
     Confirm-RegistryPath -Path $cmdPath
-    Set-Item -Path $keyPath -Value $FeatureItem.MenuLabel
+    Set-Item -Path $keyPath -Value "$($FeatureItem.MenuLabel)$MenuLabelSuffix"
 
     $iconValue = Find-UnrealLogoIcon
     if ($iconValue) {

@@ -19,9 +19,19 @@ Remove-Item -Path "HKLM:\SOFTWARE\Classes\SystemFileAssociations\.uproject\shell
 ## Features
 <img width="290" height="128" alt="clearCacheAndRebuild (2)" src="https://github.com/user-attachments/assets/dc6d08df-ac04-4a3e-b89f-69d3c7ad3738" />
 
-### ClearCacheAndRebuild
+All features resolve the project's engine version automatically from its `.uproject` file - no hardcoded engine path.
 
-Clears `Binaries`/`Intermediate` (project and plugins) and regenerates project files, auto-detecting the project's engine version.
+| Feature | What it does |
+| --- | --- |
+| **ClearCacheAndRebuild** | Clears `Binaries`/`Intermediate` (project and plugins) and regenerates project files. |
+| **Build** | Compiles the project's Editor target (Win64, Development). |
+| **RunHeadlessServer** | Launches the project as a headless (no-render) server. |
+| **CookContent** | Cooks content for Windows without opening the editor. |
+| **PackageProject** | Runs a full `BuildCookRun` package for Win64. |
+| **RunAutomationTests** | Runs automation tests headless, prompting for a test filter. |
+| **ClearDDC** | Clears the project-local Derived Data Cache (`Saved\DerivedDataCache`). |
+| **OpenSavedLogs** | Opens the project's `Saved\Logs` folder in Explorer. |
+| **OpenProjectTerminal** | Opens a terminal at the project's root folder. |
 
 **Requires:** Unreal Engine 5.x, [PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4), Windows.
 
