@@ -17,19 +17,28 @@ function Remove-Directory {
     }
 }
 
+function Get-EnginePathFromInstalledEngines {
+    param (
+        [string]$EngineAssociation
+    )
+    Get-ItemProperty -Path "HKLM:\SOFTWARE\EpicGames\Unreal Engine\$EngineAssociation" -Name "InstalledDirectory" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty InstalledDirectory
+}
+
+function Get-EnginePathFromCustomBuilds {
+    param (
+        [string]$EngineAssociation
+    )
+    Get-ItemProperty -Path "HKCU:\Software\Epic Games\Unreal Engine\Builds" -Name "$EngineAssociation" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $EngineAssociation
+}
+
 function Get-EnginePath {
     param (
         [string]$EngineAssociation
     )
 
-    $enginePath = $null
-
-    # First, try to get the engine path from HKLM
-    $enginePath = Get-ItemProperty -Path "HKLM:\SOFTWARE\EpicGames\Unreal Engine\$EngineAssociation" -Name "InstalledDirectory" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty InstalledDirectory
-
+    $enginePath = Get-EnginePathFromInstalledEngines -EngineAssociation $EngineAssociation
     if (-not $enginePath) {
-        # If not found in HKLM, check in HKCU for the Builds key
-        $enginePath = Get-ItemProperty -Path "HKCU:\Software\Epic Games\Unreal Engine\Builds" -Name "$EngineAssociation" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $EngineAssociation
+        $enginePath = Get-EnginePathFromCustomBuilds -EngineAssociation $EngineAssociation
     }
 
     if ($enginePath) {

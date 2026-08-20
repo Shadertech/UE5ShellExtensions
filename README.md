@@ -1,44 +1,38 @@
 # UE5 Shell Extensions
-**Overview**:
-This project is a place where I put useful shell extensions for UE5 projects.
 
-## Extensions
+Windows right-click context menu extensions for `.uproject` files.
 
-### 1. ClearCacheAndRebuild
+## Setup
+
+Run `UE5ShellConfiguration.ps1` (right-click → **Run with PowerShell**) to install, uninstall, or check the status of features. It's menu-driven, writes to `HKCU` (no admin needed), and auto-detects each feature's script path.
+
+Non-interactive: `-Install [-Feature <id>] [-ScriptPath <path>]`, `-Uninstall [-Feature <id>]`, `-Status [-Feature <id>]`. Omitting `-Feature` targets all features.
+
+## Upgrading from an old install
+
+Versions before `UE5ShellConfiguration.ps1` installed via a `.reg` file that wrote to `HKLM`, which the new script can't see or remove (it's `HKCU`-only).
+
+- **Not yet upgraded?** Run your existing `ClearCacheAndRebuild/UE5ClearCacheContextMenuDel.reg` first, then pull the latest changes.
+- **Already upgraded** (that file's gone)? Remove the leftover key from an elevated PowerShell:
+
+```powershell
+Remove-Item -Path "HKLM:\SOFTWARE\Classes\SystemFileAssociations\.uproject\shell\UE5ClearCache" -Recurse -Force
+```
+
+## Features
+
+### ClearCacheAndRebuild
 
 ![clearCacheAndRebuild](https://github.com/user-attachments/assets/70b3ccd1-0507-48fa-a8ef-0b83a87ecd9b)
 
-**Overview**:
-Adds a context menu option to the right click on all UProject files.
-It will clear out binaries and intermediates folders of both the project and it's plugins. It then will regenerate project files. It automatically selects the version of the UProject; working with both binary releases and custom engines.
+Clears `Binaries`/`Intermediate` (project and plugins) and regenerates project files, auto-detecting the project's engine version.
 
-I have previously created a bat file that did the same thing as well as created a context menu item for a single project. If you need anything like that just give me a shout and I will help you out.
-
-#### Prerequisites
-
-- Unreal Engine 5.x
-- [Powershell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4)
-- Windows
-
-##### Usage
-
-To install this extension:
-1. Clone the repository to your local machine.
-2. Edit ClearCacheAndRebuild/UE5ClearCacheContextMenuAdd.reg and change the path of the UE5ClearCache.ps1 to the path on your machine.
-3. Run ClearCacheAndRebuild/UE5ClearCacheContextMenuAdd.reg
-
-To remove this extension:
-1. Run ClearCacheAndRebuild/UE5ClearCacheContextMenuDel.reg
-
-To update this extension:
-1. Run ClearCacheAndRebuild/UE5ClearCacheContextMenuDel.reg
-2. Pull the latest changes from github (remember to use your path for UE5ClearCache.ps1)
-4. Run ClearCacheAndRebuild/UE5ClearCacheContextMenuAdd.reg
+**Requires:** Unreal Engine 5.x, [PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4), Windows.
 
 ## Contributing
 
-Contributions to this project are welcome. Please follow the standard GitHub workflow for submitting pull requests.
+PRs welcome.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+[MIT](LICENSE)
