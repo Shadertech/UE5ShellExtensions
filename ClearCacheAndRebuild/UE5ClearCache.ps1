@@ -7,6 +7,12 @@ if (-not $UProjectPath) {
     Exit
 }
 
+if (-not (Test-Path $UProjectPath)) {
+    Write-Output "UProject file not found: $UProjectPath"
+    Start-Sleep -Seconds 5
+    Exit
+}
+
 . (Join-Path $PSScriptRoot '..\Shared\UnrealEngineResolution.ps1')
 
 function Remove-Directory {
@@ -19,30 +25,41 @@ function Remove-Directory {
     }
 }
 
+function Remove-BuildArtifactDirectories {
+    param (
+        [string]$Path
+    )
+    Remove-Directory -Path (Join-Path -Path $Path -ChildPath "Binaries")
+    Remove-Directory -Path (Join-Path -Path $Path -ChildPath "Intermediate")
+}
+
+function Get-PluginDirectories {
+    param (
+        [string]$ProjectDir
+    )
+    $pluginsRoot = Join-Path -Path $ProjectDir -ChildPath "Plugins"
+    if (-not (Test-Path $pluginsRoot)) {
+        return @()
+    }
+    Get-ChildItem -Directory -Path $pluginsRoot
+}
+
 $dt = Get-Date -Format "yyyy.MM.dd-HH.mm.ss"
-$projectPath = $UProjectPath
-$projectName = [System.IO.Path]::GetFileNameWithoutExtension($UProjectPath)
+$projectPath = (Resolve-Path -Path $UProjectPath).Path
+$projectName = [System.IO.Path]::GetFileNameWithoutExtension($projectPath)
+$projectDir = Split-Path -Path $projectPath -Parent
 
 Write-Output "removing cache"
-Write-Output "--searching root"
+Write-Output "--searching $projectDir"
 
-Remove-Directory -Path "Binaries"
-Remove-Directory -Path "Intermediate"
+Remove-BuildArtifactDirectories -Path $projectDir
 
-Get-ChildItem -Directory "Plugins" | ForEach-Object {
+Get-PluginDirectories -ProjectDir $projectDir | ForEach-Object {
     Write-Output "--searching $($_.FullName)"
-    Remove-Directory -Path "$($_.FullName)\Binaries"
-    Remove-Directory -Path "$($_.FullName)\Intermediate"
+    Remove-BuildArtifactDirectories -Path $_.FullName
 }
 
-Write-Output "searching root for UProject"
-
-if (-not (Test-Path $projectPath)) {
-    Write-Output "UProject file not found."
-    Exit
-}
-
-$logPath = Join-Path -Path (Join-Path -Path $PWD -ChildPath "Saved\Logs") -ChildPath "UnrealVersionSelector-$dt.log"
+$logPath = Join-Path -Path $projectDir -ChildPath "Saved\Logs\UnrealVersionSelector-$dt.log"
 
 try {
     $enginePath = Get-ProjectEnginePath -UProjectFile $projectPath
@@ -53,7 +70,7 @@ try {
     Write-Output "--rebuilding $projectName"
     Write-Output "buildToolPath: $buildToolPath"
     Write-Output "logPath: $logPath"
-    Start-Process -FilePath $buildToolPath -ArgumentList "-projectfiles", "-project=$projectPath", "-game", "-rocket", "-progress", "-log=$logPath"
+    Start-Process -FilePath $buildToolPath -WorkingDirectory $projectDir -ArgumentList "-projectfiles", "-project=$projectPath", "-game", "-rocket", "-progress", "-log=$logPath"
 
 } catch {
     Write-Output $_.Exception.Message
